@@ -3,7 +3,7 @@
     <h1>LOADING</h1>
   {/if}
   <!-- svelte-ignore a11y-media-has-caption -->
-  <video class="saturate-50" bind:this={videoSource} />
+  <video class="rotate-0" bind:this={videoSource} />
   <button on:click={obtenerVideoCamara}>CLICK</button>
   <button on:click={capture}>CAPTURE</button>
   <img bind:this={photo} alt="captured" />

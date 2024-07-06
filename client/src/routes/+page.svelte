@@ -25,3 +25,4 @@
 
   const nextSection = () => goto('/cam');
 </script>
+
