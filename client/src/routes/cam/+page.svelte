@@ -8,7 +8,9 @@
       <video class="rotate-90 block" bind:this={videoSource} />
     </div>
   </div>
-  <button on:click={capture}>CAPTURE</button>
+  <button class="border-stone-800 border-2 p-1 rounded-sm" on:click={capture}
+    >CAPTURE</button
+  >
   <img bind:this={photo} alt="captured" />
   <p>
     {$session.people} 명

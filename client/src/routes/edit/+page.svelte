@@ -1,9 +1,10 @@
 <img bind:this={img} alt="" />
+
 <!-- <img src="/frame1.png" alt="" /> -->
 <!-- <canvas bind:this={canvas}></canvas> -->
-<button on:click={process}>작업</button>
+<!-- <button on:click={process}>작업</button> -->
 
-<script>
+<script lang="ts">
   import { session } from '$lib/stores/sessions';
   import { browser } from '$app/environment';
 
@@ -17,8 +18,11 @@
     const imgWidth = $session.width;
     const imgHeight = $session.height;
 
-    canvas.width = 1040;
-    canvas.height = 720;
+    const paperWidth = 1040;
+    const paperHeight = 720;
+
+    canvas.width = paperWidth;
+    canvas.height = paperHeight;
 
     const lutImgPos = [
       [194, 392],
@@ -45,14 +49,30 @@
           );
       });
 
-    const frame = new Image();
+    let frame = new Image();
     frame.src = '/frame1.png';
 
     frame.onload = () => {
-      canvas.getContext('2d').drawImage(frame, 0, 0, 1040, 720);
-      const data = canvas.toDataURL();
+      canvas.getContext('2d').drawImage(frame, 0, 0, paperWidth, paperHeight);
+
+      const rotatedImg = document.createElement('canvas');
+
+      rotatedImg.width = paperHeight;
+      rotatedImg.height = paperWidth;
+
+      const rotatedCtx = rotatedImg.getContext('2d');
+
+      rotatedCtx.save();
+      rotatedCtx.translate(paperHeight / 2, paperWidth / 2);
+      rotatedCtx.rotate(Math.PI / 2);
+      rotatedCtx.drawImage(canvas, -paperWidth / 2, -paperHeight / 2);
+      rotatedCtx.restore();
+
+      const data = rotatedImg.toDataURL();
 
       img.src = data;
     };
   }
+
+  process();
 </script>
