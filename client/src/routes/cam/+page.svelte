@@ -3,8 +3,11 @@
     <h1>LOADING</h1>
   {/if}
   <!-- svelte-ignore a11y-media-has-caption -->
-  <video class="rotate-0" bind:this={videoSource} />
-  <button on:click={obtenerVideoCamara}>CLICK</button>
+  <div bind:this={wrapper} class="block">
+    <div bind:this={wrapperInner} class="block">
+      <video class="rotate-90 block" bind:this={videoSource} />
+    </div>
+  </div>
   <button on:click={capture}>CAPTURE</button>
   <img bind:this={photo} alt="captured" />
   <p>
@@ -24,6 +27,8 @@
   let canvas = null;
   if (browser) canvas = document.createElement('canvas');
   let photo = null;
+  let wrapper = null;
+  let wrapperInner = null;
   let videoSource = null;
   let loading = false;
   const obtenerVideoCamara = async () => {
@@ -37,8 +42,13 @@
       console.log(videoSource);
       setTimeout(() => {
         height = (videoSource.videoHeight / videoSource.videoWidth) * width;
-        videoSource.setAttribute('width', width);
-        videoSource.setAttribute('height', height);
+        wrapper.style.width = `${height}px`;
+        wrapper.style.height = `${width}px`;
+        wrapperInner.style.width = `${width}px`;
+        wrapperInner.style.height = `${height}px`;
+        videoSource.style.width = `${width}px`;
+        videoSource.style.height = `${height}px`;
+        videoSource.style.transformOrigin = `${height / 2}px ${height / 2}px`;
         canvas.setAttribute('width', width);
         canvas.setAttribute('height', height);
         session.update((s) => {
@@ -71,4 +81,6 @@
   function nextSection() {
     goto('/edit');
   }
+
+  obtenerVideoCamara();
 </script>
