@@ -23,6 +23,7 @@
 
   import type { Session } from '$lib/stores/sessions';
   import type { Writable } from 'svelte/store';
+  import { onMount } from 'svelte';
 
   export let session: Writable<Session>;
 
@@ -77,5 +78,5 @@
 
   const nextSection = () => ($session.section += 1);
 
-  obtenerVideoCamara();
+  onMount(obtenerVideoCamara);
 </script>

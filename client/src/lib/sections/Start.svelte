@@ -1,11 +1,13 @@
-<h1>잠신 네컷</h1>
-<p>인원수를 입력하세요</p>
+<div>
+  <h1>잠신 네컷</h1>
+  <p>인원수를 입력하세요</p>
 
-<button class="" on:click={decrement}>-</button>
-<span>{`${$session.people}`.padStart(2, '0')} 명</span>
-<button on:click={increment}>+</button>
+  <button class="" on:click={decrement}>-</button>
+  <span>{`${$session.people}`.padStart(2, '0')} 명</span>
+  <button on:click={increment}>+</button>
 
-<button on:click={nextSection}>시작하기</button>
+  <button on:click={nextSection}>시작하기</button>
+</div>
 
 <script lang="ts">
   import type { Session } from '$lib/stores/sessions';

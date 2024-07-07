@@ -1,8 +1,10 @@
-<img bind:this={img} alt="" />
+<div>
+  <img class="border-2 border-neutral-800" bind:this={img} alt="" />
 
-<!-- <img src="/frame1.png" alt="" /> -->
-<!-- <canvas bind:this={canvas}></canvas> -->
-<button on:click={restartSection}>처음으로</button>
+  <!-- <img src="/frame1.png" alt="" /> -->
+  <!-- <canvas bind:this={canvas}></canvas> -->
+  <button on:click={restartSection}>처음으로</button>
+</div>
 
 <script lang="ts">
   import { browser } from '$app/environment';
@@ -14,6 +16,29 @@
 
   let img = null;
 
+  const lutImgData = {
+    '/frame1.png': {
+      poses: [
+        [194, 392],
+        [194, 50],
+        [619, 392],
+        [619, 50],
+      ],
+      photoWidth: 372,
+      demension: [1040, 720],
+    },
+    '/frame2.png': {
+      poses: [
+        [108, 820],
+        [108, 100],
+        [1050, 820],
+        [1050, 100],
+      ],
+      photoWidth: 907,
+      demension: [2400, 1600],
+    },
+  };
+
   function process() {
     if (!browser) return;
 
@@ -22,39 +47,32 @@
     const imgWidth = $session.width;
     const imgHeight = $session.height;
 
-    const paperWidth = 1040;
-    const paperHeight = 720;
+    const [paperWidth, paperHeight] = lutImgData[$session.frame].demension;
 
     canvas.width = paperWidth;
     canvas.height = paperHeight;
 
-    const lutImgPos = [
-      [194, 392],
-      [194, 50],
-      [619, 392],
-      [619, 50],
-    ];
-
-    console.log(lutImgPos);
+    console.log(lutImgData);
 
     $session.photos
       .filter((_, i) => i < 4)
       .forEach((photo, idx) => {
         const img = document.createElement('img');
         img.src = photo;
+        const place = lutImgData[$session.frame];
         canvas
           .getContext('2d')
           .drawImage(
             img,
-            lutImgPos[idx][0],
-            lutImgPos[idx][1],
-            372,
-            (imgHeight / imgWidth) * 372,
+            place.poses[idx][0],
+            place.poses[idx][1],
+            place.photoWidth,
+            (imgHeight / imgWidth) * place.photoWidth,
           );
       });
 
     let frame = new Image();
-    frame.src = '/frame1.png';
+    frame.src = $session.frame;
 
     frame.onload = () => {
       canvas.getContext('2d').drawImage(frame, 0, 0, paperWidth, paperHeight);
@@ -74,11 +92,14 @@
 
       const data = rotatedImg.toDataURL();
 
+      img.style.height = `${(paperWidth / paperHeight) * 720}px`;
+      img.style.width = `720px`;
+
       img.src = data;
     };
   }
 
-  const restartSection = () => ($session.section = 0);
+  const restartSection = () => ($session.end = true);
 
   process();
 </script>
