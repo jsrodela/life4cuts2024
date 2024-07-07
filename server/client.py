@@ -6,9 +6,9 @@ port = 7777
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-try :
+try  :
     
-    sock.connect((host,port))
+    sock.connect((host, port))
 
     life4cuts_link = sock.recv(1024)
     print(f"인생네컷 링크: {life4cuts_link.decode('ascii')}")
@@ -19,5 +19,5 @@ try :
 except Exception as e:
     print(f"Error: {e}")
 
-finally :
+finally  :
     sock.close()
