@@ -1,17 +1,19 @@
 import { writable } from 'svelte/store';
 
-interface Session {
+export interface Session {
   people: number,
   frame: "dark" | "light",
   photos: string[],
   width: number, height :number,
-  videoLink: string
+  videoLink: string,
+  section: number
 }
 
-export const session = writable<Session>({
+export const newSession = () => writable<Session>({
   people: 1,
   frame: "light",
   photos: [],
   width: 0, height: 0,
-  videoLink: ""
+  videoLink: "",
+  section: 0
 });

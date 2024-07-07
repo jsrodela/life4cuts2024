@@ -20,8 +20,11 @@
 
 <script lang="ts">
   import { browser } from '$app/environment';
-  import { goto } from '$app/navigation';
-  import { session } from '$lib/stores/sessions';
+
+  import type { Session } from '$lib/stores/sessions';
+  import type { Writable } from 'svelte/store';
+
+  export let session: Writable<Session>;
 
   const width = 720;
   let height = 0;
@@ -53,11 +56,8 @@
         videoSource.style.transformOrigin = `${height / 2}px ${height / 2}px`;
         canvas.setAttribute('width', width);
         canvas.setAttribute('height', height);
-        session.update((s) => {
-          s.width = width;
-          s.height = height;
-          return s;
-        });
+        $session.width = width;
+        $session.height = height;
       }, 40);
       loading = false;
     } catch (error) {
@@ -72,17 +72,10 @@
     const data = canvas.toDataURL('image/png');
     photo.setAttribute('src', data);
 
-    session.update((s) => {
-      s.photos.push(data);
-      return s;
-    });
-
-    console.log($session);
+    $session.photos.push(data);
   }
 
-  function nextSection() {
-    goto('/edit');
-  }
+  const nextSection = () => ($session.section += 1);
 
   obtenerVideoCamara();
 </script>

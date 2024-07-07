@@ -2,11 +2,15 @@
 
 <!-- <img src="/frame1.png" alt="" /> -->
 <!-- <canvas bind:this={canvas}></canvas> -->
-<!-- <button on:click={process}>작업</button> -->
+<button on:click={restartSection}>처음으로</button>
 
 <script lang="ts">
-  import { session } from '$lib/stores/sessions';
   import { browser } from '$app/environment';
+
+  import type { Session } from '$lib/stores/sessions';
+  import type { Writable } from 'svelte/store';
+
+  export let session: Writable<Session>;
 
   let img = null;
 
@@ -73,6 +77,8 @@
       img.src = data;
     };
   }
+
+  const restartSection = () => ($session.section = 0);
 
   process();
 </script>
