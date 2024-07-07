@@ -1,4 +1,4 @@
-##### 클라이언트 ######
+##### 단일 클라이언트 ######
 import socket
 
 host = "localhost"
