@@ -67,13 +67,19 @@
   };
 
   async function capture() {
-    const context = canvas.getContext('2d');
-    context.drawImage(videoSource, 0, 0, width, height);
+    let i = 0;
+    const intervalId = setInterval(() => {
+      const context = canvas.getContext('2d');
+      context.drawImage(videoSource, 0, 0, width, height);
 
-    const data = canvas.toDataURL('image/png');
-    photo.setAttribute('src', data);
+      const data = canvas.toDataURL('image/png');
+      photo.setAttribute('src', data);
 
-    $session.photos.push(data);
+      $session.photos.push(data);
+
+      if (i === 3) clearInterval(intervalId);
+      i++;
+    }, 10 * 1000);
   }
 
   const nextSection = () => ($session.section += 1);
