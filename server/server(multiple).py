@@ -1,6 +1,5 @@
-# 위에 client.py는 단일 클라이언트만 접속, 아래는 다중 클라이언트 접속
-
-
+# Server
+# 다중 클라이언트
 
 import socket
 import threading

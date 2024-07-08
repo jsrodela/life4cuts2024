@@ -20,6 +20,7 @@
 import socket
 host = "0.0.0.0" -모든 네트워크 접근 허락, 127.0.0.1로 설정하면 그 컴퓨터에서만 접근 가능
 port = 7777 - 리소스 모니터 -> tcp 연결 탭에서 안쓰는 포트 찾아서 연결 해야함. 나는 임의로 7777로 한거
+
 1.소켓 생성
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ->tcp통신은 SOCK_STREAM, UDP는 SOCK_DGRAM
