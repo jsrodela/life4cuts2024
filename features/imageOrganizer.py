@@ -3,8 +3,8 @@ import shutil
 import PIL
 from PIL import Image
 
-downloadDir = "./organizerTest/download"  # 임시 디렉토리임
-serverDir = "./organizerTest/server"  # 임시 디렉토리임
+downloadDir = "./static/organizerTest/download"  # 임시 디렉토리임
+serverDir = "./static/organizerTest/server"  # 임시 디렉토리임
 
 while True:
     if len(os.listdir(downloadDir)) > 0:
@@ -17,7 +17,11 @@ while True:
         copies = imgFileName[4:5]
         print(copies, UUID)
 
-        os.mkdir(f"{serverDir}/{UUID}")
+        try:
+            os.mkdir(f"{serverDir}/{UUID}")
+        except FileNotFoundError:
+            os.mkdir(f"{serverDir}")
+            os.mkdir(f"{serverDir}/{UUID}")
 
         shutil.move(os.path.join(downloadDir, dirContent[0]), os.path.join(f"{serverDir}/{UUID}", dirContent[0]))
 
