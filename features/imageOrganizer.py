@@ -1,13 +1,13 @@
 import os
 import shutil
 
-
+async def ()
 downloadDir = "./static/organizerTest/download"  # 임시 디렉토리임
 serverDir = "./static/organizerTest/server"  # 임시 디렉토리임
 
 dirContent = os.listdir(downloadDir)
 dirContent.sort()
-imgFileName = os.path.splitext(dirContent[0])[0]  # 교체필요
+imgFileName = os.path.splitext(dirContent[0])[0]
 
 fileType = imgFileName[:3]
 UUID = imgFileName[-36:]
