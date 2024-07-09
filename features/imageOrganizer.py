@@ -1,21 +1,31 @@
 import os
 import shutil
+import PIL
+from PIL import Image
 
-async def ()
-downloadDir = "./static/organizerTest/download"  # 임시 디렉토리임
-serverDir = "./static/organizerTest/server"  # 임시 디렉토리임
+downloadDir = "./organizerTest/download"  # 임시 디렉토리임
+serverDir = "./organizerTest/server"  # 임시 디렉토리임
 
-dirContent = os.listdir(downloadDir)
-dirContent.sort()
-imgFileName = os.path.splitext(dirContent[0])[0]
+while True:
+    if len(os.listdir(downloadDir)) > 0:
 
-fileType = imgFileName[:3]
-UUID = imgFileName[-36:]
-copies = imgFileName[4:5]
+        dirContent = os.listdir(downloadDir)
+        dirContent.sort()
+        imgFileName = os.path.splitext(dirContent[0])[0]  # 교체필요
 
-os.mkdir(f"{serverDir}/{UUID}")
+        UUID = imgFileName[-36:]
+        copies = imgFileName[4:5]
+        print(copies, UUID)
 
-shutil.move(os.path.join("./organizerTest", "download"), os.path.join(f"{serverDir}", f"{UUID}"))
+        os.mkdir(f"{serverDir}/{UUID}")
 
+        shutil.move(os.path.join(downloadDir, dirContent[0]), os.path.join(f"{serverDir}/{UUID}", dirContent[0]))
 
-print(fileType, copies, UUID)
+        for i in range(1, len(dirContent)):
+            shutil.move(os.path.join(downloadDir, dirContent[i]), os.path.join(f"{serverDir}/{UUID}", dirContent[i]))
+        print(f"File Moved. >> Session {UUID}")
+
+        img = PIL.Image.open(f"{serverDir}/{UUID}/{dirContent[0]}").convert("RGB")
+        img.save(f"{serverDir}/{UUID}/{imgFileName}.pdf")
+        print(f"pdf file created. >> Session{UUID}")
+
