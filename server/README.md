@@ -27,7 +27,7 @@
   - 접속수락 부분은 ```addr```은 대기전용. 송수신은 ```c_sock```임
   - 수신시 30번째 줄에 ```format(read_data))```사용
   - 데이터 수신시 메모리 양은 ```1024```로 지정해놓음 (변경가능)
-  - ?? ```life4cuts_link```변수의 값은 "https://www.example.com" 형식으로 올 것임
+  - ??  ```life4cuts_link```변수의 값은 "https://www.example.com" 형식으로 올 것임
 
 ***
 
