@@ -34,5 +34,5 @@ while True:
         img.save(f"{serverDir}/{UUID}/{imgFileName}.pdf")
         print(f"pdf file created. >> Session{UUID}")
 
-        printingFunc.pysidePrint(f"{serverDir}/{UUID}/{imgFileName}.pdf", copies)
+        # printingFunc.pysidePrint(f"{serverDir}/{UUID}/{imgFileName}.pdf", copies)
 
