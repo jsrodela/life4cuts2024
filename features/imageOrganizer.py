@@ -2,6 +2,7 @@ import os
 import shutil
 import PIL
 from PIL import Image
+import printingFunc
 
 downloadDir = "./static/organizerTest/download"  # 임시 디렉토리임
 serverDir = "./static/organizerTest/server"  # 임시 디렉토리임
@@ -32,4 +33,6 @@ while True:
         img = PIL.Image.open(f"{serverDir}/{UUID}/{dirContent[0]}").convert("RGB")
         img.save(f"{serverDir}/{UUID}/{imgFileName}.pdf")
         print(f"pdf file created. >> Session{UUID}")
+
+        printingFunc.pysidePrint(f"{serverDir}/{UUID}/{imgFileName}.pdf", copies)
 
