@@ -30,10 +30,10 @@ def asposePrint (path, copies):
     # PDF 파일 닫기
     viewer.close()
 
-def pysidePrint(path, copies):
+def pysidePrint(path, copies) :
     # 기본 프린터 정보 가져오기
     default_printer = QPrinterInfo.defaultPrinter()
-    if (default_printer.isNull()):
+    if (default_printer.isNull()) :
         print('연결된 프린터가 없습니다.')
         return False
     else:
