@@ -1,27 +1,31 @@
-<h1>잠신 네컷</h1>
-<p>인원수를 입력하세요</p>
-
-<button class="" on:click={decrement}>-</button>
-<span>{`${$session.people}`.padStart(2, '0')} 명</span>
-<button on:click={increment}>+</button>
-
-<button on:click={nextSection}>시작하기</button>
+{#if $session.section === 0}
+  <Start {session} />
+{:else if $session.section === 1}
+  <FrameSelect {session} />
+{:else if $session.section === 2}
+  <Cam {session} />
+{:else if $session.section === 3}
+  <Edit {session} />
+{/if}
 
 <script>
-  import { session } from '$lib/stores/sessions';
-  import { goto } from '$app/navigation';
+  import Cam from '$lib/sections/Cam.svelte';
+  import Start from '$lib/sections/Start.svelte';
+  import Edit from '$lib/sections/Result.svelte';
+  import FrameSelect from '$lib/sections/FrameSelect.svelte';
 
-  const decrement = () =>
-    session.update((s) => {
-      if (s.people > 1) s.people -= 1;
-      return s;
+  import { newSession } from '$lib/stores/sessions';
+
+  import { dev, browser } from '$app/environment';
+
+  let session = newSession();
+
+  $: if ($session.end) session = newSession();
+
+  if (dev && browser) {
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') $session.section += 1;
+      if (e.key === 'ArrowLeft') $session.section -= 1;
     });
-
-  const increment = () =>
-    session.update((s) => {
-      if (s.people < 10) s.people += 1;
-      return s;
-    });
-
-  const nextSection = () => goto('/cam');
+  }
 </script>
