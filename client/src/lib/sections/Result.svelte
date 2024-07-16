@@ -1,9 +1,12 @@
-<div class="background">
-  <img class="border-2 border-neutral-800" bind:this={img} alt="" />
+<div class="flex flex-col gap-4 justify-center items-center">
+  <img class="border-2 border-neutral-800 h-96" bind:this={img} alt="" />
 
   <!-- <img src="/frame1.png" alt="" /> -->
   <!-- <canvas bind:this={canvas}></canvas> -->
-  <button on:click={restartSection}>처음으로</button>
+  <button
+    class="w-fit bg-neutral-200 p-3 h-14 rounded-xl font-ridi-serif font-bold text-4xl flex justify-center items-center hover:bg-neutral-300 transition ease-linear"
+    on:click={restartSection}>처음으로</button
+  >
 </div>
 
 <script lang="ts">
@@ -92,8 +95,8 @@
 
       const data = rotatedImg.toDataURL();
 
-      img.style.height = `${(paperWidth / paperHeight) * 720}px`;
-      img.style.width = `720px`;
+      // img.style.height = `${(paperWidth / paperHeight) * 720}px`;
+      // img.style.width = `720px`;
 
       img.src = data;
 
@@ -110,31 +113,3 @@
 
   process();
 </script>
-
-<style>
-  .background {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-    font-family: 'Noto Sans', Arial, sans-serif;
-    padding: 0;
-    width: 100vw;
-  }
-  button {
-    width: 200px;
-    height: 60px;
-    border: none;
-    background-color: #ffffff;
-    color: rgb(15, 15, 15);
-    font-size: 1.5em;
-    cursor: pointer;
-    border-radius: 10px;
-    margin-top: 40px;
-    font-weight: 900;
-  }
-</style>
