@@ -1,7 +1,7 @@
 <div class="w-full">
-  <h2 class="text-5xl text-center mb-10">프레임을 선택해 주세요</h2>
+  <h2 class="text">프레임을 선택해 주세요</h2>
 
-  <div class="flex w-full justify-evenly">
+  <div class="flex">
     <button on:click={handleFrameSelection} data-id="/frame1.png">
       <img
         src="/frame1-preview.webp"
@@ -33,3 +33,32 @@
     $session.section += 1;
   }
 </script>
+
+<style>
+  .w-full {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    font-family: 'Noto Sans', Arial, sans-serif;
+    padding: 0;
+    width: 100vw;
+  }
+  .flex {
+    float: center;
+  }
+  button {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+  .text {
+    font-size: xx-large;
+    font-weight: bolder;
+    font-family: 'Noto Sans', Arial, sans-serif;
+  }
+
+</style>

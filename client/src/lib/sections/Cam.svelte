@@ -1,21 +1,14 @@
-<div>
+<div class="background">
   {#if loading}
     <h1>LOADING</h1>
   {/if}
   <!-- svelte-ignore a11y-media-has-caption -->
-  <div bind:this={wrapper} class="block">
-    <div bind:this={wrapperInner} class="block">
-      <video class="rotate-90 block" bind:this={videoSource} />
-    </div>
-  </div>
-  <button class="border-stone-800 border-2 p-1 rounded-sm" on:click={capture}
+  <video class="video" bind:this={videoSource} />
+  <button class="capture" on:click={capture}
     >CAPTURE</button
   >
   <img bind:this={photo} alt="captured" />
-  <p>
-    {$session.people} 명
-  </p>
-  <button on:click={nextSection}>다음으로</button>
+  <button class="next" on:click={nextSection}>다음으로</button>
 </div>
 
 <script lang="ts">
@@ -79,10 +72,55 @@
 
       if (i === 3) clearInterval(intervalId);
       i++;
-    }, 10 * 1000);
+    }, 1 * 1000);
   }
 
   const nextSection = () => ($session.section += 1);
 
   onMount(obtenerVideoCamara);
 </script>
+
+<style>
+  .background {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    font-family: 'Noto Sans', Arial, sans-serif;
+    padding: 0;
+    width: 100vw;
+  }
+  .video {
+    transform: rotateY(180deg);
+    size: 100%;
+  }
+  .capture {
+    width: 200px;
+    height: 60px;
+    border: none;
+    background-color: #ffffff;
+    color: rgb(15, 15, 15);
+    font-size: 1.5em;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: 40px;
+    font-weight: 900;
+  }
+
+  .next { 
+    width: 140px;
+    height: 50px;
+    border: none;
+    background-color: #ffffff;
+    color: rgb(15, 15, 15);
+    font-size: 1.5em;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: 40px;
+    font-weight: 900;
+  }
+</style>

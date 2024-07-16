@@ -1,4 +1,4 @@
-<div>
+<div class="background">
   <img class="border-2 border-neutral-800" bind:this={img} alt="" />
 
   <!-- <img src="/frame1.png" alt="" /> -->
@@ -103,3 +103,31 @@
 
   process();
 </script>
+
+<style>
+  .background {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    font-family: 'Noto Sans', Arial, sans-serif;
+    padding: 0;
+    width: 100vw;
+  }
+  button {
+    width: 200px;
+    height: 60px;
+    border: none;
+    background-color: #ffffff;
+    color: rgb(15, 15, 15);
+    font-size: 1.5em;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: 40px;
+    font-weight: 900;
+  }
+</style>
