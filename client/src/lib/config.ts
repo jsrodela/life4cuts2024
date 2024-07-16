@@ -1,3 +1,3 @@
 export default {
-  frames: ["/frame1.png","/frame2.png"]
+  frames: ["/frame1.png","/frame2.png"],
 }
