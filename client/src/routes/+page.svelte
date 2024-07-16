@@ -5,13 +5,13 @@
 {:else if $session.section === 2}
   <Cam {session} />
 {:else if $session.section === 3}
-  <Edit {session} />
+  <Result {session} />
 {/if}
 
-<script>
+<script lang="ts">
   import Cam from '$lib/sections/Cam.svelte';
   import Start from '$lib/sections/Start.svelte';
-  import Edit from '$lib/sections/Result.svelte';
+  import Result from '$lib/sections/Result.svelte';
   import FrameSelect from '$lib/sections/FrameSelect.svelte';
 
   import { newSession } from '$lib/stores/sessions';
@@ -20,7 +20,7 @@
 
   let session = newSession();
 
-  $: if ($session.end) session = newSession();
+  $: if ($session.state === 'end') session = newSession();
 
   if (dev && browser) {
     window.addEventListener('keydown', (e) => {

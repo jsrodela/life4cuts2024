@@ -10,6 +10,8 @@
   import { browser } from '$app/environment';
 
   import type { Session } from '$lib/stores/sessions';
+  import { createNDownloadVideo } from '$lib/utils/createVideo';
+  import { downloadDataUrl } from '$lib/utils/downloadImg';
   import type { Writable } from 'svelte/store';
 
   export let session: Writable<Session>;
@@ -51,8 +53,6 @@
 
     canvas.width = paperWidth;
     canvas.height = paperHeight;
-
-    console.log(lutImgData);
 
     $session.photos
       .filter((_, i) => i < 4)
@@ -96,10 +96,17 @@
       img.style.width = `720px`;
 
       img.src = data;
+
+      // img.addEventListener('load', () => {
+      //   console.log('asdas');
+      //   downloadDataUrl(data, `cuts-${$session.people}-${$session.id}`);
+
+      //   createNDownloadVideo($session.record);
+      // });
     };
   }
 
-  const restartSection = () => ($session.end = true);
+  const restartSection = () => ($session.state = 'end');
 
   process();
 </script>
