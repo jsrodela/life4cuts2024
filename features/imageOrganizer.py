@@ -18,13 +18,17 @@ while True:
         print(copies, UUID)
         try:
             os.mkdir(f"{serverDir}/{UUID}")
+
         except FileNotFoundError:
             os.mkdir(f"{serverDir}")
             os.mkdir(f"{serverDir}/{UUID}")
+
         shutil.move(os.path.join(downloadDir, dirContent[0]), os.path.join(f"{serverDir}/{UUID}", dirContent[0]))
+
         for i in range(1, len(dirContent)):
             shutil.move(os.path.join(downloadDir, dirContent[i]), os.path.join(f"{serverDir}/{UUID}", dirContent[i]))
         print(f"File Moved. >> Session {UUID}")
+
         img = PIL.Image.open(f"{serverDir}/{UUID}/{dirContent[0]}").convert("RGB")
         img.save(f"{serverDir}/{UUID}/{imgFileName}.pdf")
         print(f"pdf file created. >> Session{UUID}")
