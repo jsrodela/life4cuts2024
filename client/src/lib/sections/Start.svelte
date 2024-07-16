@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="background">
   <h1>잠신 네컷</h1>
   <p></p>
   <p>인원수를 입력하세요</p>
@@ -27,7 +27,7 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
 
-  .container-fluid {
+  .background {
     display: flex;
     flex-direction: column;
     align-items: center;
