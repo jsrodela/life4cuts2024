@@ -59,6 +59,7 @@
         canvas.setAttribute('height', height);
         $session.width = width;
         $session.height = height;
+        console.log('🚀 ~ setTimeout ~ height:', $session.height);
       }, 40);
       loading = false;
     } catch (error) {
@@ -81,7 +82,7 @@
 
         $session.photos.push(data);
 
-        console.log($session.photos);
+        // console.log($session.photos);
 
         if (i === 3) {
           clearInterval(intervalId);
