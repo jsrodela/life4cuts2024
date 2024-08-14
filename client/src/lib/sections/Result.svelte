@@ -1,17 +1,22 @@
-<div class="background">
-  <img class="border-2 border-neutral-800" bind:this={img} alt="" />
+<div class="flex flex-col gap-4 justify-center items-center">
+  <img class="border-2 border-neutral-800 h-96" bind:this={img} alt="" />
 
   <!-- <img src="/frame1.png" alt="" /> -->
   <!-- <canvas bind:this={canvas}></canvas> -->
-  <button on:click={restartSection}>처음으로</button>
+  <button
+    class="w-fit bg-neutral-200 p-3 h-14 rounded-xl font-ridi-serif font-bold text-4xl flex justify-center items-center hover:bg-neutral-300 transition ease-linear"
+    on:click={restartSection}>처음으로</button
+  >
 </div>
 
 <script lang="ts">
   import { browser } from '$app/environment';
+  import { page } from '$app/stores';
 
   import type { Session } from '$lib/stores/sessions';
   import { createNDownloadVideo } from '$lib/utils/createVideo';
   import { downloadDataUrl } from '$lib/utils/downloadImg';
+  import { onMount } from 'svelte';
   import type { Writable } from 'svelte/store';
 
   export let session: Writable<Session>;
@@ -41,8 +46,12 @@
     },
   };
 
+  let photoElements: { element: HTMLImageElement; loaded: boolean }[] = [];
+
   function process() {
     if (!browser) return;
+
+    console.log('process start');
 
     const canvas = document.createElement('canvas');
 
@@ -54,87 +63,101 @@
     canvas.width = paperWidth;
     canvas.height = paperHeight;
 
-    $session.photos
-      .filter((_, i) => i < 4)
-      .forEach((photo, idx) => {
-        const img = document.createElement('img');
-        img.src = photo;
-        const place = lutImgData[$session.frame];
+    function loadImage() {
+      photoElements = Array.from({ length: 4 }, (_, i) => {
+        const element = new Image();
+        element.src = $session.photos[i];
+        const result = {
+          element,
+          loaded: false,
+        };
+        element.addEventListener('load', () => {
+          result.loaded = true;
+          console.log(
+            `Image ${i} loaded.`,
+            `All loaded: `,
+            photoElements.map((p) => p.loaded).every((l) => l),
+          );
+          if (photoElements.map((p) => p.loaded).every((l) => l)) {
+            addImage();
+            console.log('image all loaded');
+          }
+        });
+        return result;
+      });
+    }
+
+    function addImage() {
+      photoElements.forEach(({ element }, idx) => {
+        const lut = lutImgData[$session.frame];
+
+        console.log(
+          `adding image pos: ${lut.poses[idx][0]} ${lut.poses[idx][1]}`,
+          element,
+        );
+
         canvas
           .getContext('2d')
           .drawImage(
-            img,
-            place.poses[idx][0],
-            place.poses[idx][1],
-            place.photoWidth,
-            (imgHeight / imgWidth) * place.photoWidth,
+            element,
+            lut.poses[idx][0],
+            lut.poses[idx][1],
+            lut.photoWidth,
+            (element.height / element.width) * lut.photoWidth,
           );
+
+        console.log(
+          lut.poses[idx][0],
+          lut.poses[idx][1],
+          lut.photoWidth,
+          imgHeight,
+          imgWidth,
+          lut.photoWidth,
+        );
       });
 
-    let frame = new Image();
-    frame.src = $session.frame;
+      applyFrame();
+    }
 
-    frame.onload = () => {
-      canvas.getContext('2d').drawImage(frame, 0, 0, paperWidth, paperHeight);
+    function applyFrame() {
+      let frame = new Image();
+      frame.src = $session.frame;
+      // frame.src = '';
 
-      const rotatedImg = document.createElement('canvas');
+      frame.addEventListener('load', () => {
+        canvas.getContext('2d').drawImage(frame, 0, 0, paperWidth, paperHeight);
 
-      rotatedImg.width = paperHeight;
-      rotatedImg.height = paperWidth;
+        // const rotatedImg = document.createElement('canvas');
 
-      const rotatedCtx = rotatedImg.getContext('2d');
+        // rotatedImg.width = paperHeight;
+        // rotatedImg.height = paperWidth;
 
-      rotatedCtx.save();
-      rotatedCtx.translate(paperHeight / 2, paperWidth / 2);
-      rotatedCtx.rotate(Math.PI / 2);
-      rotatedCtx.drawImage(canvas, -paperWidth / 2, -paperHeight / 2);
-      rotatedCtx.restore();
+        // const rotatedCtx = rotatedImg.getContext('2d');
 
-      const data = rotatedImg.toDataURL();
+        // rotatedCtx.save();
+        // rotatedCtx.translate(paperHeight / 2, paperWidth / 2);
+        // rotatedCtx.rotate(Math.PI / 2);
+        // // rotatedCtx.drawImage(canvas, -paperWidth / 2, -paperHeight / 2);
+        // rotatedCtx.restore();
 
-      img.style.height = `${(paperWidth / paperHeight) * 720}px`;
-      img.style.width = `720px`;
+        const data = canvas.toDataURL();
 
-      img.src = data;
+        // img.style.height = `${(paperWidth / paperHeight) * 720}px`;
+        // img.style.width = `720px`;
 
-      // img.addEventListener('load', () => {
-      //   console.log('asdas');
-      //   downloadDataUrl(data, `cuts-${$session.people}-${$session.id}`);
+        img.src = data;
 
-      //   createNDownloadVideo($session.record);
-      // });
-    };
+        img.addEventListener('load', () => {
+          console.log('asdas');
+          downloadDataUrl(data, `cuts-${$session.people}-${$session.id}`);
+        });
+      });
+    }
+
+    loadImage();
   }
 
   const restartSection = () => ($session.state = 'end');
 
-  process();
+  onMount(process);
 </script>
-
-<style>
-  .background {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-    font-family: 'Noto Sans', Arial, sans-serif;
-    padding: 0;
-    width: 100vw;
-  }
-  button {
-    width: 200px;
-    height: 60px;
-    border: none;
-    background-color: #ffffff;
-    color: rgb(15, 15, 15);
-    font-size: 1.5em;
-    cursor: pointer;
-    border-radius: 10px;
-    margin-top: 40px;
-    font-weight: 900;
-  }
-</style>
