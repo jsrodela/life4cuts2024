@@ -14,7 +14,7 @@ if not printers:
     print("No printers found.")
 else:
     # Get the default printer
-    printer_name = list(printers.keys())[0]  # You can choose a specific printer if needed
+    printer_name = list(printers.keys())[0]  # Choose default printer
 
     # Print the image to the default printer
     print_job_id = conn.printFile(printer_name, image_path, "", {})
