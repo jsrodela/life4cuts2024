@@ -1,4 +1,3 @@
-websocket
 pycups
 pillow
 qrcode
