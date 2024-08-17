@@ -1,26 +1,20 @@
-# Server
-# 단일 클라이언트
+import time
+import print # 프린트 모듈
+import upload # QR코드 및 업로드 모듈
+import combine # 사진 & 프레임 합성 함수
 
-import socket
+while(True):
+    """ 
+    5초마다 새로운 파일이 있는지 확인 - 작성필요
+    newfile = 새로운 파일이 발견될 시 활성화(트리거)
+    uid = 파일 uid, number = 인원수 
+    """
+    if newfile:
+        code = upload.pre_code()
+        upload.gen_qrcode(code, uid)
+        combine.combine_photo(uid)
+        print.print_printer(number)
+        upload.post_file(code)
+    else: 
+        time.sleep(5)
 
-host = "0.0.0.0"  # 모든 네트워크 접근 허락, 127.0.0.1로 설정할 시 로컬에서만 접근 가능
-port = 7777  # 임의의 값임. 안쓰는 포트 찾아서 연결필요
-
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # 소켓생성
-
-sock.bind((host, port))  # 바인딩,
-# "안에 호스트", port = 7777
-
-sock.listen()  # 접속대기
-
-c_sock, addr = sock.accept()  # 접속수락
-
-
-read_data = c_sock.recv(1024) # 데이터 수신
-life4cuts_link = "링크"
-c_sock.send(life4cuts_link.encode('ascii'))
-
-
-
-c_sock.close()
-sock.close()
