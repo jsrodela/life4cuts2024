@@ -2,3 +2,4 @@ pycups
 pillow
 qrcode
 requests
+watchdog
