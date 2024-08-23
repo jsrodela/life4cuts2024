@@ -76,17 +76,15 @@
           console.log(
             `Image ${i} loaded.`,
             `All loaded: `,
-            photoElements.map((p) => p.loaded).every((l) => l),
+            photoElements.every((l) => l.loaded),
           );
-          if (photoElements.map((p) => p.loaded).every((l) => l)) {
-            //addImage();
-					  //  photoElements.map(p=>{
-								//	downloadDataUrl(p.element.currentSrc, "asda")
-								//	console.log(p.element.currentSrc)
-	    //})
-	    //downloadDataUrl(data, `cuts-${$session.people}-${$session.id}`);
-		downloadImages()
-            console.log('image all loaded');
+          if (photoElements.every((p) => p.loaded)) {
+		//photoElements.forEach((element)=>
+		//{
+		//	console.log(element.src)
+		//})
+		addImage()
+            	console.log('image all loaded', $session.width, $session.height);
           }
         });
         return result;
@@ -94,9 +92,10 @@
     }
 
     function downloadImages() {
-				photoElements.forEach(photo=>{
+				photoElements.forEach(({element})=>{
+								console.log(element.src)
 								const canv = document.createElement("canvas")
-								canv.width = 
+	//							canv.width = 
 				}
 				)
     }
@@ -117,7 +116,7 @@
             lut.poses[idx][0],
             lut.poses[idx][1],
             lut.photoWidth,
-            (element.height / element.width) * lut.photoWidth,
+            ($session.height / $session.width) * lut.photoWidth,
           );
 
         console.log(
