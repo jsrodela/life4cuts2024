@@ -3,3 +3,4 @@ pillow
 qrcode
 requests
 python-socketio
+eventlet
