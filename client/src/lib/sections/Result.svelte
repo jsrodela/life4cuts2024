@@ -79,12 +79,26 @@
             photoElements.map((p) => p.loaded).every((l) => l),
           );
           if (photoElements.map((p) => p.loaded).every((l) => l)) {
-            addImage();
+            //addImage();
+					  //  photoElements.map(p=>{
+								//	downloadDataUrl(p.element.currentSrc, "asda")
+								//	console.log(p.element.currentSrc)
+	    //})
+	    //downloadDataUrl(data, `cuts-${$session.people}-${$session.id}`);
+		downloadImages()
             console.log('image all loaded');
           }
         });
         return result;
       });
+    }
+
+    function downloadImages() {
+				photoElements.forEach(photo=>{
+								const canv = document.createElement("canvas")
+								canv.width = 
+				}
+				)
     }
 
     function addImage() {
@@ -122,7 +136,7 @@
     function applyFrame() {
       let frame = new Image();
       frame.src = $session.frame;
-      // frame.src = '';
+      //frame.src = '';
 
       frame.addEventListener('load', () => {
         canvas.getContext('2d').drawImage(frame, 0, 0, paperWidth, paperHeight);
