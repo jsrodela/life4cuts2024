@@ -38,33 +38,39 @@
   let videoSource = null;
   let loading = false;
   const obtenerVideoCamara = async () => {
-    try {
+    
       loading = true;
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
+        video: {width: {max:640}, height: {max:480}},
       });
       videoSource.srcObject = stream;
-      videoSource.play();
+      videoSource.onloadedmetadata = () => {
+		videoSource.play();
+		}
       console.log(videoSource);
       setTimeout(() => {
+      	const v = videoSource.getBoundingClientRect()
+	console.log(v)
         height = (videoSource.videoHeight / videoSource.videoWidth) * width;
-        wrapper.style.width = `${height}px`;
+        try {
+	wrapper.style.width = `${height}px`;
         wrapper.style.height = `${width}px`;
         wrapperInner.style.width = `${width}px`;
         wrapperInner.style.height = `${height}px`;
         videoSource.style.width = `${width}px`;
         videoSource.style.height = `${height}px`;
         videoSource.style.transformOrigin = `${height / 2}px ${height / 2}px`;
-        canvas.setAttribute('width', width);
-        canvas.setAttribute('height', height);
-        $session.width = width;
-        $session.height = height;
+        
+	} catch (e) {}
+        if(!($session.width && $session.height)) {
+		$session.width = v.width;
+        	$session.height = v.height;
+		canvas.width = v.width;
+        	canvas.height = v.height;
+	}
         console.log('🚀 ~ setTimeout ~ height:', $session.height);
       }, 40);
       loading = false;
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   async function capture() {
@@ -75,7 +81,8 @@
     const intervalId = setInterval(
       () => {
         const context = canvas.getContext('2d');
-        context.drawImage(videoSource, 0, 0, width, height);
+	console.log(canvas.width,canvas.height, $session.wigth, $session.height)
+        context.drawImage(videoSource, 0, 0, $session.width, $session.height);
 
         const data = canvas.toDataURL('image/png');
         // photo.setAttribute('src', data);
