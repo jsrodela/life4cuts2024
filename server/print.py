@@ -1,8 +1,6 @@
 import cups
 
-def print_printer(path, number):
-    # Define the path to your image
-    image_path = path
+def print_printer(final_image, number):
 
     # Connect to the CUPS server
     conn = cups.Connection()
@@ -20,7 +18,7 @@ def print_printer(path, number):
         for i in range(number):
 
             # Print the image to the default printer
-            print_job_id = conn.printFile(printer_name, image_path, "", {})
+            print_job_id = conn.printFile(printer_name, final_image, "", {})
             
             print(f"Print job sent to printer '{printer_name}' with job ID: {print_job_id}")
 

@@ -2,4 +2,4 @@ pycups
 pillow
 qrcode
 requests
-watchdog
+python-socketio
