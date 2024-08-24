@@ -1,16 +1,18 @@
 from PIL.Image import Image
 
-# 숫자 수정 필요!!!
+# QR코드 위치 수정 필요!!!
 
-def combine_photo(photo, qrcode, frame):
+def combine_photo(photo, qrcode):
 
+    '''
+    background = Image.open(f'frame{frame}.png').convert("RGBA")
+    
     w = 523
     h = 400
 
     pos = {(74, 64), (614, 64), (1154, 64), (74, 480)}
-    qr_pos = (23, 15)
 
-    background = Image.open(f'frame{frame}.png').convert("RGBA")
+    
     for i in range(4):
         photo = photo[i].convert("RGBA")
 
@@ -21,7 +23,9 @@ def combine_photo(photo, qrcode, frame):
         photo = photo.crop((w_off//2, 0, photo[i].width - w_off//2, h))
 
         background.paste(photo, pos[i])
+    '''
+    qr_pos = (23, 15)
 
     qr = qrcode.convert("RGBA")
-    background.paste(qr, qr_pos)
-    return background
+    photo.paste(qr, qr_pos)
+    return photo

@@ -20,17 +20,27 @@ def message(sid, data):
 
     data = json.loads(data)
     people = data.people # int
+    photo = data.photo # base64 string
+    photo = Image.open(BytesIO(base64.b64decode(photo)))
+
+    print(f'인원수: {people}')
+    
+    '''
     frame = data.frame # int
     photo = [data.p1, data.p2, data.p3, data.p4] # base64 string
     for i in range(4): # base64 로 받은 이미지 디코딩
         photo[i] = Image.open(BytesIO(base64.b64decode(photo[i])))
+    
 
     print(f'인원수: {people}, 프레임: {frame}')
+    '''
 
     code = upload.pre_code()
     qrcode = upload.gen_qrcode(code)
 
-    final_image = combine.combine_photo(photo, qrcode, frame)
+    print(f'공유코드: {code}')
+
+    final_image = combine.combine_photo(photo, qrcode)
     final_image.save(f'./media/final-{code}.png', 'png')
 
     printer.print_printer(f'./media/final-{code}.png', people)
@@ -44,4 +54,5 @@ def disconnect(sid):
 # 실행할 때 웹 소켓 서버 시작
 if __name__ == '__main__':
     app = socketio.WSGIApp(sio)
+    # 포트번호 클라이언트와 일치시키기
     eventlet.wsgi.server(eventlet.listen(('localhost', 4000)), app)
