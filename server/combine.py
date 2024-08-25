@@ -30,4 +30,4 @@ def combine_photo(photo, qrcode, frame):
     qr = qrcode.convert("RGBA")
     bg.paste(qr, qr_pos[frame - 1])
     bg.paste(photo)
-    return photo
+    return bg
