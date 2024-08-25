@@ -21,18 +21,15 @@ def message(sid, data):
     data = json.loads(data)
     people = data.people # int
     photo = data.photo # base64 string
+    frame = data.frame # int
     photo = Image.open(BytesIO(base64.b64decode(photo)))
 
-    print(f'인원수: {people}')
-    
+    print(f'인원수: {people}, 프레임: {frame}')
+
     '''
-    frame = data.frame # int
     photo = [data.p1, data.p2, data.p3, data.p4] # base64 string
     for i in range(4): # base64 로 받은 이미지 디코딩
         photo[i] = Image.open(BytesIO(base64.b64decode(photo[i])))
-    
-
-    print(f'인원수: {people}, 프레임: {frame}')
     '''
 
     code = upload.pre_code()
@@ -40,7 +37,7 @@ def message(sid, data):
 
     print(f'공유코드: {code}')
 
-    final_image = combine.combine_photo(photo, qrcode)
+    final_image = combine.combine_photo(photo, qrcode, frame)
     final_image.save(f'./media/final-{code}.png', 'png')
 
     printer.print_printer(f'./media/final-{code}.png', people)

@@ -2,7 +2,7 @@ from PIL.Image import Image
 
 # QR코드 위치 수정 필요!!!
 
-def combine_photo(photo, qrcode):
+def combine_photo(photo, qrcode, frame):
 
     '''
     background = Image.open(f'frame{frame}.png').convert("RGBA")
@@ -24,8 +24,8 @@ def combine_photo(photo, qrcode):
 
         background.paste(photo, pos[i])
     '''
-    qr_pos = (23, 15)
+    qr_pos = [(23, 15), (23, 15), (23,15)] # 각 1,2,3번 프레임
 
     qr = qrcode.convert("RGBA")
-    photo.paste(qr, qr_pos)
+    photo.paste(qr, qr_pos[frame-1])
     return photo
