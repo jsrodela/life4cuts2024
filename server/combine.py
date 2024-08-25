@@ -24,8 +24,10 @@ def combine_photo(photo, qrcode, frame):
 
         background.paste(photo, pos[i])
     '''
-    qr_pos = [(23, 15), (23, 15), (23,15)] # 각 1,2,3번 프레임
+    bg = Image.new('RGBA',(photo.size[0], photo.size[1]),'white') # All White 2400×1600 Image.
 
+    qr_pos = [(23, 15), (23, 15), (23, 15)]  # 각 1,2,3번 프레임
     qr = qrcode.convert("RGBA")
-    photo.paste(qr, qr_pos[frame-1])
+    bg.paste(qr, qr_pos[frame - 1])
+    bg.paste(photo)
     return photo
