@@ -26,7 +26,7 @@ def gen_qrcode(code: int) -> Image: # 미리 받은 공유코드로 QR코드 생
     qrc = qrcode.QRCode(
         version=1,
         error_correction=qrcode.ERROR_CORRECT_M,
-        box_size=3,
+        box_size=4,
         border=1
     )
     qrc.add_data(VIDEO_SERVER_URL + '/receive?code=' + str(code))
