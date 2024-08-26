@@ -18,7 +18,7 @@ def print_printer(final_image, number):
         for i in range(number):
 
             # Print the image to the default printer
-            print_job_id = conn.printFile(printer_name, final_image, "", {})
+            print_job_id = conn.printFile(printer_name, final_image, "", {'fit-to-page': "True"})
             
             print(f"Print job sent to printer '{printer_name}' with job ID: {print_job_id}")
 
