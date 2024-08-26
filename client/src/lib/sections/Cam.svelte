@@ -1,9 +1,18 @@
-<div class="flex flex-col justify-center gap-4">
+<div class="flex flex-col justify-center gap-96">
 	<!-- svelte-ignore a11y-media-has-caption -->
-	<video class="h-[480px] block aspect-[4/3] bg-neutral-600 video" bind:this={videoSource} />
+	<div class="cam-wrapper2 relative">
+		<div class="cam-wrapper grid place-items-center h-[960px] gap-10">
+			<div class="video-wrapper rotate-90">
+				<video class="h-[720px] aspect-[4/3] block bg-neutral-600 video" bind:this={videoSource} />
+			</div>
+		</div>
+		<div id="count" class="" bind:this={counter}></div>
+	</div>
 
 	<div class="flex justify-center">
-		<button class="bg-neutral-300 rounded-full w-fit" on:click={capture}><IcOutlineCamera class="text-8xl" /></button>
+		<button disabled={started} class="bg-neutral-300 rounded-full w-fit disabled:text-neutral-400" on:click={capture}
+			><IcOutlineCamera class="text-8xl" /></button
+		>
 	</div>
 	<!-- <img bind:this={photo} alt="captured" /> -->
 	<!-- <button class="next" on:click={nextSection}>다음으로</button> -->
@@ -31,6 +40,7 @@
 	let wrapper = null
 	let wrapperInner = null
 	let videoSource = null
+	let counter: HTMLElement | null = null
 	let loading = false
 	const obtenerVideoCamara = async () => {
 		loading = true
@@ -69,28 +79,34 @@
 	async function capture() {
 		started = true
 		// this.classList.add('hidden');
+		counter.classList.add('count')
 
 		let i = 0
-		const intervalId = setInterval(
-			() => {
-				const context = canvas.getContext('2d')
-				context.drawImage(videoSource, 0, 0, $session.width, $session.height)
+		const intervalId = setInterval(async () => {
+			counter.innerText = `${10 - (i % 13) > 0 ? 10 - (i % 13) : '✌️'}`
+			console.log(i)
+			i++
+			videoSource.classList.remove('capture')
+			if ((i + 2) % 13) return
+			videoSource.classList.add('capture')
+			if (i > 3 * 13) {
+				clearInterval(intervalId)
+				nextSection()
+			}
+			counter.classList.remove('count')
 
-				const data = canvas.toDataURL('image/png')
-				// photo.setAttribute('src', data);
+			const context = canvas.getContext('2d')
+			context.drawImage(videoSource, 0, 0, $session.width, $session.height)
 
-				$session.photos.push(data)
+			const data = canvas.toDataURL('image/png')
+			// photo.setAttribute('src', data);
 
-				// console.log($session.photos);
+			$session.photos.push(data)
 
-				if (i === 3) {
-					clearInterval(intervalId)
-					nextSection()
-				}
-				i++
-			},
-			(dev ? 1 : 10) * 1000
-		)
+			console.log($session.photos)
+
+			counter.classList.add('count')
+		}, 1 * 1000)
 
 		// let downloadButton = null;
 		// if (browser) downloadButton = document.createElement('a');

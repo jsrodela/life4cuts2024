@@ -1,5 +1,5 @@
-<div class="flex flex-col gap-4 justify-center items-center">
-	<img class="border-2 border-neutral-800 h-96" bind:this={img} alt="" />
+<div class="flex flex-col gap-48 justify-center items-center">
+	<img class="border-2 rotate-90 border-neutral-800 h-[720px] aspect-[4/3]" bind:this={img} alt="" />
 
 	<!-- <img src="/frame1.png" alt="" /> -->
 	<!-- <canvas bind:this={canvas}></canvas> -->
@@ -81,9 +81,7 @@
 
 				console.log(`adding image pos: ${lut.poses[idx][0]} ${lut.poses[idx][1]}`, element)
 
-				canvas
-					.getContext('2d')
-					.drawImage(element, lut.poses[idx][0], lut.poses[idx][1], lut.photoWidth, ($session.height / $session.width) * lut.photoWidth)
+				canvas.getContext('2d').drawImage(element, lut.poses[idx][0], lut.poses[idx][1], lut.photoWidth, (imgWidth / imgHeight) * lut.photoWidth)
 
 				console.log(lut.poses[idx][0], lut.poses[idx][1], lut.photoWidth, imgHeight, imgWidth, lut.photoWidth)
 			})
