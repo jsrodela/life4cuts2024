@@ -1,176 +1,140 @@
 <div class="flex flex-col gap-4 justify-center items-center">
-  <img class="border-2 border-neutral-800 h-96" bind:this={img} alt="" />
+	<img class="border-2 border-neutral-800 h-96" bind:this={img} alt="" />
 
-  <!-- <img src="/frame1.png" alt="" /> -->
-  <!-- <canvas bind:this={canvas}></canvas> -->
-  <button
-    class="w-fit bg-neutral-200 p-3 h-14 rounded-xl font-ridi-serif font-bold text-4xl flex justify-center items-center hover:bg-neutral-300 transition ease-linear"
-    on:click={restartSection}>처음으로</button
-  >
+	<!-- <img src="/frame1.png" alt="" /> -->
+	<!-- <canvas bind:this={canvas}></canvas> -->
+	<button
+		class="w-fit bg-neutral-200 p-3 h-14 rounded-xl font-ridi-serif font-bold text-4xl flex justify-center items-center hover:bg-neutral-300 transition ease-linear"
+		on:click={restartSection}>처음으로</button
+	>
 </div>
 
 <script lang="ts">
-  import { browser } from '$app/environment';
-  import { page } from '$app/stores';
+	import { browser } from '$app/environment'
+	import { lutImgData } from '$lib/config'
 
-  import type { Session } from '$lib/stores/sessions';
-  import { createNDownloadVideo } from '$lib/utils/createVideo';
-  import { downloadDataUrl } from '$lib/utils/downloadImg';
-  import { onMount } from 'svelte';
-  import type { Writable } from 'svelte/store';
+	import { socket, type Session } from '$lib/stores/sessions'
+	import { downloadDataUrl } from '$lib/utils/downloadImg'
+	import { onMount } from 'svelte'
+	import type { Writable } from 'svelte/store'
 
-  export let session: Writable<Session>;
+	export let session: Writable<Session>
 
-  let img = null;
+	let img = null
 
-  const lutImgData = {
-    '/frame1.png': {
-      poses: [
-        [194, 392],
-        [194, 50],
-        [619, 392],
-        [619, 50],
-      ],
-      photoWidth: 372,
-      demension: [1040, 720],
-    },
-    '/frame2.png': {
-      poses: [
-        [108, 820],
-        [108, 100],
-        [1050, 820],
-        [1050, 100],
-      ],
-      photoWidth: 907,
-      demension: [2400, 1600],
-    },
-  };
+	let photoElements: { element: HTMLImageElement; loaded: boolean }[] = []
 
-  let photoElements: { element: HTMLImageElement; loaded: boolean }[] = [];
+	function process() {
+		if (!browser) return
 
-  function process() {
-    if (!browser) return;
+		console.log('process start')
 
-    console.log('process start');
+		const canvas = document.createElement('canvas')
 
-    const canvas = document.createElement('canvas');
+		const imgWidth = $session.width
+		const imgHeight = $session.height
 
-    const imgWidth = $session.width;
-    const imgHeight = $session.height;
+		const [paperWidth, paperHeight] = lutImgData[$session.frame].demension
 
-    const [paperWidth, paperHeight] = lutImgData[$session.frame].demension;
+		canvas.width = paperWidth
+		canvas.height = paperHeight
 
-    canvas.width = paperWidth;
-    canvas.height = paperHeight;
-
-    function loadImage() {
-      photoElements = Array.from({ length: 4 }, (_, i) => {
-        const element = new Image();
-        element.src = $session.photos[i];
-        const result = {
-          element,
-          loaded: false,
-        };
-        element.addEventListener('load', () => {
-          result.loaded = true;
-          console.log(
-            `Image ${i} loaded.`,
-            `All loaded: `,
-            photoElements.every((l) => l.loaded),
-          );
-          if (photoElements.every((p) => p.loaded)) {
-		//photoElements.forEach((element)=>
-		//{
-		//	console.log(element.src)
-		//})
-		addImage()
-            	console.log('image all loaded', $session.width, $session.height);
-          }
-        });
-        return result;
-      });
-    }
-
-    function downloadImages() {
-				photoElements.forEach(({element})=>{
-								console.log(element.src)
-								const canv = document.createElement("canvas")
-	//							canv.width = 
+		function loadImage() {
+			photoElements = Array.from({ length: 4 }, (_, i) => {
+				const element = new Image()
+				element.src = $session.photos[i]
+				const result = {
+					element,
+					loaded: false,
 				}
-				)
-    }
+				element.addEventListener('load', () => {
+					result.loaded = true
+					console.log(
+						`Image ${i} loaded.`,
+						`All loaded: `,
+						photoElements.every((l) => l.loaded)
+					)
+					if (photoElements.every((p) => p.loaded)) {
+						//photoElements.forEach((element)=>
+						//{
+						//	console.log(element.src)
+						//})
+						addImage()
+						console.log('image all loaded', $session.width, $session.height)
+					}
+				})
+				return result
+			})
+		}
 
-    function addImage() {
-      photoElements.forEach(({ element }, idx) => {
-        const lut = lutImgData[$session.frame];
+		function downloadImages() {
+			photoElements.forEach(({ element }) => {
+				console.log(element.src)
+				const canv = document.createElement('canvas')
+				//							canv.width =
+			})
+		}
 
-        console.log(
-          `adding image pos: ${lut.poses[idx][0]} ${lut.poses[idx][1]}`,
-          element,
-        );
+		function addImage() {
+			photoElements.forEach(({ element }, idx) => {
+				const lut = lutImgData[$session.frame]
 
-        canvas
-          .getContext('2d')
-          .drawImage(
-            element,
-            lut.poses[idx][0],
-            lut.poses[idx][1],
-            lut.photoWidth,
-            ($session.height / $session.width) * lut.photoWidth,
-          );
+				console.log(`adding image pos: ${lut.poses[idx][0]} ${lut.poses[idx][1]}`, element)
 
-        console.log(
-          lut.poses[idx][0],
-          lut.poses[idx][1],
-          lut.photoWidth,
-          imgHeight,
-          imgWidth,
-          lut.photoWidth,
-        );
-      });
+				canvas
+					.getContext('2d')
+					.drawImage(element, lut.poses[idx][0], lut.poses[idx][1], lut.photoWidth, ($session.height / $session.width) * lut.photoWidth)
 
-      applyFrame();
-    }
+				console.log(lut.poses[idx][0], lut.poses[idx][1], lut.photoWidth, imgHeight, imgWidth, lut.photoWidth)
+			})
 
-    function applyFrame() {
-      let frame = new Image();
-      frame.src = $session.frame;
-      //frame.src = '';
+			applyFrame()
+		}
 
-      frame.addEventListener('load', () => {
-        canvas.getContext('2d').drawImage(frame, 0, 0, paperWidth, paperHeight);
+		function applyFrame() {
+			let frame = new Image()
+			frame.src = `frame${$session.frame}.png`
+			//frame.src = '';
 
-        // const rotatedImg = document.createElement('canvas');
+			frame.addEventListener('load', () => {
+				canvas.getContext('2d').drawImage(frame, 0, 0, paperWidth, paperHeight)
 
-        // rotatedImg.width = paperHeight;
-        // rotatedImg.height = paperWidth;
+				// const rotatedImg = document.createElement('canvas');
 
-        // const rotatedCtx = rotatedImg.getContext('2d');
+				// rotatedImg.width = paperHeight;
+				// rotatedImg.height = paperWidth;
 
-        // rotatedCtx.save();
-        // rotatedCtx.translate(paperHeight / 2, paperWidth / 2);
-        // rotatedCtx.rotate(Math.PI / 2);
-        // // rotatedCtx.drawImage(canvas, -paperWidth / 2, -paperHeight / 2);
-        // rotatedCtx.restore();
+				// const rotatedCtx = rotatedImg.getContext('2d');
 
-        const data = canvas.toDataURL();
+				// rotatedCtx.save();
+				// rotatedCtx.translate(paperHeight / 2, paperWidth / 2);
+				// rotatedCtx.rotate(Math.PI / 2);
+				// // rotatedCtx.drawImage(canvas, -paperWidth / 2, -paperHeight / 2);
+				// rotatedCtx.restore();
 
-        // img.style.height = `${(paperWidth / paperHeight) * 720}px`;
-        // img.style.width = `720px`;
+				const data = canvas.toDataURL()
 
-        img.src = data;
+				// img.style.height = `${(paperWidth / paperHeight) * 720}px`;
+				// img.style.width = `720px`;
 
-        img.addEventListener('load', () => {
-          console.log('asdas');
-          downloadDataUrl(data, `cuts-${$session.people}-${$session.id}`);
-        });
-      });
-    }
+				img.src = data
 
-    loadImage();
-  }
+				img.addEventListener('load', () => {
+					console.log('asdas')
+					downloadDataUrl(data, `cuts-${$session.people}-${$session.id}`)
+					$socket.emit('message', {
+						people: $session.people,
+						photo: data,
+						frame: $session.frame,
+					})
+				})
+			})
+		}
 
-  const restartSection = () => ($session.state = 'end');
+		loadImage()
+	}
 
-  onMount(process);
+	const restartSection = () => ($session.state = 'end')
+
+	onMount(process)
 </script>
