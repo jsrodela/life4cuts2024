@@ -40,7 +40,7 @@ def message(sid, data):
     final_image = combine.combine_photo(photo, qrcode, frame)
     final_image.save(f'./media/final-{code}.png', 'png')
 
-    printer.print_printer(f'./media/final-{code}.png', people)
+    printer.print_printer(f'./media/final-{code}.png', people, code)
     upload.post_file(code, f'./media/final-{code}.png')
 
 # 연결 해제 이벤트 핸들러
