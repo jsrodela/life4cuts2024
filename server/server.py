@@ -7,7 +7,7 @@ import combine # 사진 & 프레임 합성 함수
 import socketio, eventlet
 
 # Socket.IO 서버 생성
-sio = socketio.Server()
+sio = socketio.Server(cors_allowed_origins='*')
 
 # 연결 이벤트 핸들러
 @sio.event
@@ -19,6 +19,7 @@ def connect(sid, environ):
 def message(sid, data):
 
     data = json.loads(data)
+    print(data)
     people = data.people # int
     photo = data.photo # base64 string
     frame = data.frame # int
