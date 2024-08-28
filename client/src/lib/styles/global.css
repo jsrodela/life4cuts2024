@@ -56,6 +56,7 @@ body {
 }
 
 .video {
+	max-width: unset;
 	opacity: 100%;
 	transition: cubic-bezier(0, 1.28, 0.63, 0.94) 1s;
 }

@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-48 justify-center items-center">
-	<img class="border-2 rotate-90 border-neutral-800 h-[720px] aspect-[4/3]" bind:this={img} alt="" />
+	<img class="video-wrapper rotate-90 h-[720px]" bind:this={img} alt="" />
 
 	<!-- <img src="/frame1.png" alt="" /> -->
 	<!-- <canvas bind:this={canvas}></canvas> -->
@@ -54,6 +54,7 @@
 						`All loaded: `,
 						photoElements.every((l) => l.loaded)
 					)
+					document.body.appendChild(element)
 					if (photoElements.every((p) => p.loaded)) {
 						//photoElements.forEach((element)=>
 						//{
@@ -69,7 +70,6 @@
 
 		function downloadImages() {
 			photoElements.forEach(({ element }) => {
-				console.log(element.src)
 				const canv = document.createElement('canvas')
 				//							canv.width =
 			})
@@ -81,9 +81,31 @@
 
 				console.log(`adding image pos: ${lut.poses[idx][0]} ${lut.poses[idx][1]}`, element)
 
-				canvas.getContext('2d').drawImage(element, lut.poses[idx][0], lut.poses[idx][1], lut.photoWidth, (imgWidth / imgHeight) * lut.photoWidth)
+				canvas
+					.getContext('2d')
+					.drawImage(
+						element,
+						0,
+						0,
+						$session.width,
+						$session.height,
+						lut.poses[idx][0],
+						lut.poses[idx][1],
+						lut.photoWidth,
+						($session.height / $session.width) * lut.photoWidth
+					)
 
-				console.log(lut.poses[idx][0], lut.poses[idx][1], lut.photoWidth, imgHeight, imgWidth, lut.photoWidth)
+				console.log(
+					'adding image:',
+					0,
+					0,
+					$session.width,
+					$session.height,
+					lut.poses[idx][0],
+					lut.poses[idx][1],
+					lut.photoWidth,
+					($session.width / $session.height) * lut.photoWidth
+				)
 			})
 
 			applyFrame()
@@ -118,8 +140,7 @@
 				img.src = data
 
 				img.addEventListener('load', () => {
-					console.log('asdas')
-					downloadDataUrl(data, `cuts-${$session.people}-${$session.id}`)
+					// downloadDataUrl(data, `cuts-${$session.people}-${$session.id}`)
 					$socket.emit('message', {
 						people: $session.people,
 						photo: data,

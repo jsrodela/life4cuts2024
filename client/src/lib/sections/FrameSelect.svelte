@@ -4,7 +4,7 @@
 	<div class="flex gap-32">
 		{#each [1, 2, 3, 4] as num}
 			<button on:click={handleFrameSelection} data-frame={num}>
-				<img src={`/frame${num}-preview.webp`} alt="" class="w-96 border-2 border-neutral-800" />
+				<img src={`/frame${num}-preview.webp`} alt="" class="shadow-2xl w-96 border-2 border-neutral-800" />
 			</button>
 		{/each}
 	</div>
