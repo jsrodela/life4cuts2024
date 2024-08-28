@@ -3,7 +3,7 @@
 	<div class="cam-wrapper2 relative">
 		<div class="cam-wrapper grid place-items-center h-[960px] gap-10">
 			<div class="video-wrapper rotate-90 overflow-hidden h-[720px] aspect-[4/3]">
-				<video class="block bg-neutral-600 video" bind:this={videoSource} />
+				<video class="w-[1000px] block bg-neutral-600 video" bind:this={videoSource} />
 			</div>
 		</div>
 		<div id="count" class="" bind:this={counter}></div>
@@ -17,6 +17,12 @@
 	<!-- <img bind:this={photo} alt="captured" /> -->
 	<!-- <button class="next" on:click={nextSection}>다음으로</button> -->
 </div>
+
+<style>
+.video {
+    transform: scale(1.28, .96) translate(200px,-15px);
+}
+</style>
 
 <script lang="ts">
 	import { browser, dev } from '$app/environment'
@@ -45,8 +51,10 @@
 	const obtenerVideoCamara = async () => {
 		loading = true
 		const stream = await navigator.mediaDevices.getUserMedia({
-			video: { width: { min: 640, max: 640 * 2 }, height: { min: 480, max: 480 * 2 } },
+			video: true,
+            audio: false
 		})
+        //{ width: { min: 640, max: 640 * 2 }, height: { min: 480, max: 480 * 2 } }
 		videoSource.srcObject = stream
 		videoSource.onloadedmetadata = () => {
 			videoSource.play()
@@ -62,8 +70,8 @@
 			if (!($session.width && $session.height)) {
 				$session.width = (videoSource.videoHeight * 4) / 3
 				$session.height = videoSource.videoHeight
-				// videoSource.style.width = `${width}px`
-				// videoSource.style.height = `${height}px`
+				//videoSource.style.width =  `100%`
+				//videoSource.style.height = `${height}px`
 				canvas.width = (videoSource.videoHeight * 4) / 3
 				canvas.height = videoSource.videoHeight
 			}
