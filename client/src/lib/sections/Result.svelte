@@ -14,6 +14,7 @@
 	import { lutImgData } from '$lib/config'
 
 	import { socket, type Session } from '$lib/stores/sessions'
+	import utf8 from 'utf8'
 	import { downloadDataUrl } from '$lib/utils/downloadImg'
 	import { onMount } from 'svelte'
 	import type { Writable } from 'svelte/store'
@@ -143,7 +144,7 @@
 					// downloadDataUrl(data, `cuts-${$session.people}-${$session.id}`)
 					$socket.emit('message', JSON.stringify({
 						people: $session.people,
-						photo: data,
+						photo: utf8.encode(data),
 						frame: $session.frame,
 					}))
 				})
