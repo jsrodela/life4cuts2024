@@ -10,12 +10,14 @@
 	</div>
 
 	<div class="flex justify-center anim2">
-		<button disabled={started} class="bg-neutral-300 rounded-full w-fit disabled:text-neutral-400 shadow-2xl shadow-black" on:click={capture}
+		<button disabled={started} class="bg-neutral-300 rounded-full w-fit disabled:text-neutral-400 shadow-2xl shadow-black" on:click={capture} style="border: 3px solid green;"
 			><IcOutlineCamera class="text-8xl" /></button
 		>
 	</div>
 	<!-- <img bind:this={photo} alt="captured" /> -->
 	<!-- <button class="next" on:click={nextSection}>다음으로</button> -->
+
+	<audio id="shutter" src="{`/camera-sound-effects.mp3`}" style="display: hidden;" preload="auto"></audio>
 </div>
 
 <style>
@@ -86,6 +88,7 @@
 		counter.classList.add('count')
 
 		let i = 0
+		let shutter = document.getElementById('shutter')
 		const intervalId = setInterval(
 			async () => {
 				counter.innerText = `${10 - (i % 13) > 0 ? 10 - (i % 13) : '✌️'}`
@@ -98,6 +101,9 @@
 					nextSection()
 				}
 				counter.classList.remove('count')
+
+				shutter.currentTime = 0;
+				shutter.play();
 
 				const context = canvas.getContext('2d')
 				context.drawImage(videoSource, 0, 0, $session.width, $session.height, 0, 0, $session.width, $session.height)
