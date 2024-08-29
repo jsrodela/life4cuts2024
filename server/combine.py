@@ -34,5 +34,5 @@ def combine_photo(photo, qrcode, frame):
     bg.paste(photo)
     bg.paste(qr, qr_pos[int(frame) - 1])
 
-    # bg = bg.rotate(-90, expand=True)
+    bg = bg.rotate(-90, expand=True)
     return bg
