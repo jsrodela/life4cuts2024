@@ -140,11 +140,17 @@
 
 				img.src = data
 
+				let encoded;
+
+				canvas.toBlob(function(blob){
+				    encoded = blob
+				  },'image/png')
+
 				img.addEventListener('load', () => {
 					// downloadDataUrl(data, `cuts-${$session.people}-${$session.id}`)
 					$socket.emit('message', JSON.stringify({
 						people: $session.people,
-						photo: utf8.encode(canvas.toBlob()),
+						photo: encoded,
 						frame: $session.frame,
 					}))
 				})
