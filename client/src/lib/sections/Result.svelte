@@ -144,7 +144,7 @@
 					// downloadDataUrl(data, `cuts-${$session.people}-${$session.id}`)
 					$socket.emit('message', JSON.stringify({
 						people: $session.people,
-						photo: utf8.encode(data),
+						photo: canvas.toDataURL('image/jpeg',1),
 						frame: $session.frame,
 					}))
 				})
