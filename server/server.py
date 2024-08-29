@@ -8,7 +8,7 @@ import socketio, eventlet
 import re
 
 # Socket.IO 서버 생성
-sio = socketio.Server(cors_allowed_origins='*')
+sio = socketio.Server(cors_allowed_origins='*', max_http_buffer_size=100000000)
 
 # 연결 이벤트 핸들러
 @sio.event
