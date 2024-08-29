@@ -4,3 +4,5 @@ qrcode
 requests
 python-socketio
 eventlet
+flask
+flask_socketio

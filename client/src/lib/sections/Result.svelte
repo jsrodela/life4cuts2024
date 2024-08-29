@@ -87,7 +87,7 @@
 						element,
 						0,
 						0,
-						$session.width,
+						$session.width*3/4,
 						$session.height,
 						lut.poses[idx][0],
 						lut.poses[idx][1],
@@ -141,11 +141,11 @@
 
 				img.addEventListener('load', () => {
 					// downloadDataUrl(data, `cuts-${$session.people}-${$session.id}`)
-					$socket.emit('message', {
+					$socket.emit('message', JSON.stringify({
 						people: $session.people,
 						photo: data,
 						frame: $session.frame,
-					})
+					}))
 				})
 			})
 		}

@@ -51,10 +51,10 @@
 	const obtenerVideoCamara = async () => {
 		loading = true
 		const stream = await navigator.mediaDevices.getUserMedia({
-			video: true,
+			video: { width: { min: 640, max: 640 * 2 }, height: { min: 480, max: 480 * 2 } },
             audio: false
 		})
-        //{ width: { min: 640, max: 640 * 2 }, height: { min: 480, max: 480 * 2 } }
+        
 		videoSource.srcObject = stream
 		videoSource.onloadedmetadata = () => {
 			videoSource.play()

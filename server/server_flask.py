@@ -4,27 +4,26 @@ from io import BytesIO
 import printer # 프린트 모듈
 import upload # QR코드 및 업로드 모듈
 import combine # 사진 & 프레임 합성 함수
-import socketio, eventlet
-import re
+from flask import Flask
+from flask_socketio import SocketIO
 
-# Socket.IO 서버 생성
-sio = socketio.Server(cors_allowed_origins='*')
+app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
-# 연결 이벤트 핸들러
-@sio.event
-def connect(sid, environ):
-    print('클라이언트가 연결되었습니다:', sid)
+@app.route('/')
+def index():
+    return "SocketIO Server is running!"
+
 
 # 메시지 이벤트 핸들러
-@sio.event
-def message(sid, data):
+@socketio.on('message')
+def message(data):
 
-    json_data = json.loads(data)
-    print(json_data.keys())
-    people = json_data["people"] # int
-    photo = json_data["photo"] # base64 string
-    frame = json_data["frame"] # int
-    photo = re.search(r'base64,(.*)', photo).group(1)
+    data = json.loads(data)
+    print(data)
+    people = data.people # int
+    photo = data.photo # base64 string
+    frame = data.frame # int
     photo = Image.open(BytesIO(base64.b64decode(photo)))
 
     print(f'인원수: {people}, 프레임: {frame}')
@@ -46,13 +45,6 @@ def message(sid, data):
     printer.print_printer(f'./media/final-{code}.png', people, code)
     upload.post_file(code, f'./media/final-{code}.png')
 
-# 연결 해제 이벤트 핸들러
-@sio.event
-def disconnect(sid):
-    print('클라이언트가 연결 해제되었습니다:', sid)
-
 # 실행할 때 웹 소켓 서버 시작
 if __name__ == '__main__':
-    app = socketio.WSGIApp(sio)
-    # 포트번호 클라이언트와 일치시키기
-    eventlet.wsgi.server(eventlet.listen(('localhost', 4000)), app)
+    socketio.run(app, host='localhost', port=4000)
