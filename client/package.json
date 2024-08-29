@@ -31,6 +31,7 @@
 	"type": "module",
 	"dependencies": {
 		"socket.io-client": "^4.7.5",
+		"utf8": "^3.0.0",
 		"webm-writer": "^1.0.0"
 	}
 }
