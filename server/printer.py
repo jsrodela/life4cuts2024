@@ -1,7 +1,7 @@
 import cups
 import time
 
-def print_printer(final_image, number, code):
+def print_printer(final_image, number, code, frame):
 
     # Connect to the CUPS server
     conn = cups.Connection()
@@ -18,7 +18,10 @@ def print_printer(final_image, number, code):
 
         for i in range(number):
             # Print the image to the default printer
-            print_job_id = conn.printFile(printer_name, final_image, f"{code}", {'fit-to-paper': "True"})
+            if frame == 1:
+                print_job_id = conn.printFile(printer_name, final_image, f"{code}", {'fit-to-page': "True"})
+            else:
+                print_job_id = conn.printFile(printer_name, final_image, f"{code}", {'fit-to-paper': "True"})
             print(f"Print job sent to printer '{printer_name}' with job ID: {print_job_id}")
             time.sleep(0.1)
 
