@@ -4,7 +4,7 @@
 	<!-- <img src="/frame1.png" alt="" /> -->
 	<!-- <canvas bind:this={canvas}></canvas> -->
 	<button
-		class="w-fit bg-neutral-200 p-3 h-14 rounded-xl font-ridi-serif font-bold text-4xl flex justify-center items-center hover:bg-neutral-300 transition ease-linear"
+		class="w-fit bg-neutral-200 p-3 h-14 rounded-xl font-ridi-serif font-bold text-4xl flex justify-center items-center hover:bg-neutral-300 transition ease-linear anim2"
 		on:click={restartSection}>처음으로</button
 	>
 </div>
@@ -54,7 +54,7 @@
 						`All loaded: `,
 						photoElements.every((l) => l.loaded)
 					)
-					document.body.appendChild(element)
+					//document.body.appendChild(element)
 					if (photoElements.every((p) => p.loaded)) {
 						//photoElements.forEach((element)=>
 						//{

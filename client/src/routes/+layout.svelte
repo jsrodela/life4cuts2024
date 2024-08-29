@@ -13,4 +13,5 @@
 
 <script>
   import '$lib/styles/global.css';
+  import '$lib/styles/anim.css';
 </script>

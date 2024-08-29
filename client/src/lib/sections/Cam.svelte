@@ -9,7 +9,7 @@
 		<div id="count" class="" bind:this={counter}></div>
 	</div>
 
-	<div class="flex justify-center">
+	<div class="flex justify-center anim2">
 		<button disabled={started} class="bg-neutral-300 rounded-full w-fit disabled:text-neutral-400 shadow-2xl shadow-black" on:click={capture}
 			><IcOutlineCamera class="text-8xl" /></button
 		>

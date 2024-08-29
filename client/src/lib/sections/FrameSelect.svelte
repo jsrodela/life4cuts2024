@@ -1,7 +1,7 @@
 <div class="flex flex-col justify-center items-center gap-12">
-	<h1 class="text-6xl font-bold font-ridi-serif drop-shadow-[4px_4px_1px_rgba(0,0,0,0.3)]">프레임을 선택해 주세요</h1>
+	<h1 class="text-6xl font-bold font-ridi-serif drop-shadow-[4px_4px_1px_rgba(0,0,0,0.3)] anim">프레임을 선택해 주세요</h1>
 
-	<div class="flex gap-32">
+	<div class="flex gap-32 anim1">
 		{#each [1, 2, 3, 4] as num}
 			<button on:click={handleFrameSelection} data-frame={num}>
 				<img src={`/frame${num}-preview.webp`} alt="" class="shadow-2xl w-96 border-2 border-neutral-800" />
