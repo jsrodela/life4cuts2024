@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SocketIO Client</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+</head>
+<body>
+    <script>
+        const socket = io('http://localhost:4000');
+
+        socket.on('connect', () => {
+            console.log('Connected to the server');
+            // 커스텀 메시지 보내기
+            socket.emit('message', { message: 'Hello, Server!' });
+        });
+
+        socket.on('response', (data) => {
+            console.log('Received response:', data);
+        });
+    </script>
+</body>
+</html>
