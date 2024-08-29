@@ -19,9 +19,9 @@ def print_printer(final_image, number, code, frame):
         for i in range(number):
             # Print the image to the default printer
             if frame == 1:
-                print_job_id = conn.printFile(printer_name, final_image, f"{code}", {'fit-to-page': "True"})
+                print_job_id = conn.printFile(printer_name, final_image, f"{code}", {'scale': "100"})
             else:
-                print_job_id = conn.printFile(printer_name, final_image, f"{code}", {'fit-to-paper': "True"})
+                print_job_id = conn.printFile(printer_name, final_image, f"{code}", {'scale': "60"})
             print(f"Print job sent to printer '{printer_name}' with job ID: {print_job_id}")
             time.sleep(0.1)
 
