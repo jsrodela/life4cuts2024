@@ -18,7 +18,7 @@ def print_printer(final_image, number, code, frame):
 
         for i in range(number):
             # Print the image to the default printer
-            print_job_id = conn.printFile(printer_name, final_image, f"{code}", {'fit-to-paper': "True"})
+            print_job_id = conn.printFile(printer_name, final_image, f"{code}", {"scale": "100", "media": "4x6.Borderless", "ColorModel": "Color"})
             print(f"Print job sent to printer '{printer_name}' with job ID: {print_job_id}")
             time.sleep(0.1)
 

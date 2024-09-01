@@ -17,12 +17,12 @@
 	<!-- <img bind:this={photo} alt="captured" /> -->
 	<!-- <button class="next" on:click={nextSection}>다음으로</button> -->
 
-	<audio id="shutter" src="{`/camera-sound-effects.mp3`}" style="display: hidden;" preload="auto"></audio>
+	<audio id="shutter" bind:this={shutter} src="{`/camera-sound-effects.mp3`}" style="display: hidden;" preload="auto"></audio>
 </div>
 
 <style>
 .video {
-    transform: scale(1.28, .96) translate(200px,-15px);
+    transform: scale(1.28, .96) translate(110px,-15px);
 }
 </style>
 
@@ -43,6 +43,7 @@
 	let started = false
 
 	let canvas = null
+	let shutter: HTMLAudioElement |null ;
 	if (browser) canvas = document.createElement('canvas')
 	// let photo = null;
 	let wrapper = null
@@ -88,7 +89,7 @@
 		counter.classList.add('count')
 
 		let i = 0
-		let shutter = document.getElementById('shutter')
+		
 		const intervalId = setInterval(
 			async () => {
 				counter.innerText = `${10 - (i % 13) > 0 ? 10 - (i % 13) : '✌️'}`
